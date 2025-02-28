@@ -1,0 +1,260 @@
+### **Project: The E-Commerce Empire**
+
+### **Objective:**
+
+Build a **FastAPI-based REST API** with **SQLAlchemy** for an e-commerce platform called **"ShopNest"**. Use **SQLite** as the database to store user, product, and order details.
+
+---
+
+### **Requirements:**
+
+### **1. Database Setup:**
+
+Create a SQLite database named `shopnest.db` with the following tables:
+
+1. **Users Table (`users`)**
+    - `id` (Primary Key, Auto-increment)
+    - `username` (Text, Unique)
+    - `password` (Text, Hashed using **bcrypt** or similar)
+    - `email` (Text, Unique)
+    - `address` (Text, Optional)
+    - `is_admin` (Boolean, Default: `False`)
+2. **Products Table (`products`)**
+    - `id` (Primary Key, Auto-increment)
+    - `name` (Text)
+    - `description` (Text)
+    - `price` (Float)
+    - `stock` (Integer)
+3. **Orders Table (`orders`)**
+    - `id` (Primary Key, Auto-increment)
+    - `user_id` (Foreign Key referencing `users.id`)
+    - `product_id` (Foreign Key referencing `products.id`)
+    - `quantity` (Integer)
+    - `total_price` (Float)
+    - `order_date` (Text, Default: Current Date)
+
+---
+
+### **2. API Endpoints:**
+
+### **A. User Management:**
+
+1. **POST `/signup`**: Register a new user. The request body should include `username`, `password`, `email`, and `address` (optional).
+2. **POST `/login`**: Authenticate a user. The request body should include `username` and `password`. Return a success message upon successful login.
+3. **GET `/users/{user_id}`**: Retrieve a specific user's details.
+
+### **B. Product Management (Admin Only):**
+
+1. **POST `/products`**: Add a new product. The request body should include `name`, `description`, `price`, and `stock`. Only admins can access this endpoint.
+2. **PUT `/products/{product_id}`**: Update an existing product's details by its ID. Only admins can access this endpoint.
+3. **DELETE `/products/{product_id}`**: Delete a product by its ID. Only admins can access this endpoint.
+
+### **C. Product Browsing (All Users):**
+
+1. **GET `/products`**: Retrieve all products.
+2. **GET `/products/{product_id}`**: Retrieve a specific product by its ID.
+
+### **D. Order Management:**
+
+1. **POST `/orders`**: Place a new order. The request body should include `product_id` and `quantity`. The API should:
+    - Check if the product is in stock.
+    - Calculate the total price (`quantity * price`).
+    - Deduct the ordered quantity from the product's stock.
+    - Store the order in the database.
+2. **GET `/orders/{user_id}`**: Retrieve all orders placed by a specific user.
+3. **GET `/orders/details/{order_id}`**: Retrieve a specific order by its ID.
+
+---
+
+### **3. Data Validation:**
+
+- Use **Pydantic models** to validate the request body for all endpoints.
+
+### **4. Password Hashing:**
+
+- Use a library like `bcrypt` to hash passwords before storing them in the database.
+
+### **5. Error Handling:**
+
+- Return appropriate HTTP status codes (e.g., 400 for invalid input, 401 for unauthorized access, 404 for not found).
+
+### **6. Testing:**
+
+- Test all endpoints using **Postman** or any API testing tool.
+
+---
+
+### **Example Workflow:**
+
+### **1. User Management:**
+
+1. Sign up:
+    - **POST `/signup`**
+    - Request Body:
+        
+        ```json
+        {
+          "username": "john_doe",
+          "password": "password123",
+          "email": "john@example.com",
+          "address": "123 Main St"
+        }
+        
+        ```
+        
+    - Response:
+        
+        ```json
+        {
+          "message": "User registered successfully"
+        }
+        
+        ```
+        
+2. Log in:
+    - **POST `/login`**
+    - Request Body:
+        
+        ```json
+        {
+          "username": "john_doe",
+          "password": "password123"
+        }
+        
+        ```
+        
+    - Response:
+        
+        ```json
+        {
+          "message": "Login successful"
+        }
+        
+        ```
+        
+3. Retrieve user details:
+    - **GET `/users/1`**
+    - Response:
+        
+        ```json
+        {
+          "id": 1,
+          "username": "john_doe",
+          "email": "john@example.com",
+          "address": "123 Main St"
+        }
+        
+        ```
+        
+
+### **2. Product Management:**
+
+1. Add a product (Admin Only):
+    - **POST `/products`**
+    - Request Body:
+        
+        ```json
+        {
+          "name": "Wireless Mouse",
+          "description": "Ergonomic wireless mouse",
+          "price": 25.99,
+          "stock": 100
+        }
+        
+        ```
+        
+    - Response:
+        
+        ```json
+        {
+          "id": 1,
+          "name": "Wireless Mouse",
+          "description": "Ergonomic wireless mouse",
+          "price": 25.99,
+          "stock": 100
+        }
+        
+        ```
+        
+2. Retrieve all products:
+    - **GET `/products`**
+    - Response:
+        
+        ```json
+        [
+          {
+            "id": 1,
+            "name": "Wireless Mouse",
+            "description": "Ergonomic wireless mouse",
+            "price": 25.99,
+            "stock": 100
+          }
+        ]
+        
+        ```
+        
+
+### **3. Order Management:**
+
+1. Place an order:
+    - **POST `/orders`**
+    - Request Body:
+        
+        ```json
+        {
+          "product_id": 1,
+          "quantity": 2
+        }
+        
+        ```
+        
+    - Response:
+        
+        ```json
+        {
+          "id": 1,
+          "user_id": 1,
+          "product_id": 1,
+          "quantity": 2,
+          "total_price": 51.98,
+          "order_date": "2023-10-01"
+        }
+        
+        ```
+        
+2. Retrieve all orders of a user:
+    - **GET `/orders/1`**
+    - Response:
+        
+        ```json
+        [
+          {
+            "id": 1,
+            "user_id": 1,
+            "product_id": 1,
+            "quantity": 2,
+            "total_price": 51.98,
+            "order_date": "2023-10-01"
+          }
+        ]
+        
+        ```
+        
+
+---
+
+### **Final Deliverables:**
+
+1. A fully functional FastAPI application with all the required endpoints.
+2. A SQLite database (`shopnest.db`) with the `users`, `products`, and `orders` tables.
+3. Test cases for all endpoints using Postman or any API testing tool.
+4. A README file explaining how to set up and run the project.
+
+---
+
+### **Bonus Challenge:**
+
+- Add a **search functionality** to filter products by name, price range, or stock availability.
+- Implement **pagination** for the `/products` and `/orders` endpoints.
+
+Good luck, and may your e-commerce empire thrive! 🛒🚀

@@ -2,6 +2,5 @@
 
 
 <!---
-Dhanish-06/Dhanish-06 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
+Inquisitive, energetic, and self-motivated Computer Science graduate with a strong interest in Software Engineering, Data Science, Machine Learning, Backend Development, and Cybersecurity. Previously worked at xTransMatrix as an AI Operator, gaining hands-on experience in AI-driven solutions. Passionate about building efficient, scalable, and secure systems, leveraging expertise in Python, REST APIs, and LLM technologies. Open to opportunities in software development, data science, and AI-driven innovation. Dedicated to driving organizational success while fostering continuous personal and professional growth. A versatile individual who blends technical expertise with artistic creativity, bringing innovative solutions to complex problems.
 --->
